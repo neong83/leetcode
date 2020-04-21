@@ -4,50 +4,26 @@
 #         self.val = x
 #         self.next = None
 
-class Solution:
-    
-    def get_value_from_node(self, node: ListNode) -> int:
-        if node:
-            return node.val
-        return 0
-    
-    def get_next_node(self, node: ListNode) -> ListNode:
-        if node:
-            return node.next
-        return None
-    
-    def add_ints_with_carry(self, l1: int, l2: int, carry: int) -> (int, int):
-        sum_of_ints = l1 + l2 + carry
-        carry = 0
-        
-        if sum_of_ints >= 10:
-            sum_of_ints %= 10
-            carry = 1
-        
-        return sum_of_ints, carry
-        
-    
+class Solution:    
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        list_nodes = []
+        node_head = ListNode(0)
         i, j = l1, l2
         carry = 0
+        current = node_head
         
-        while i or j:
-            sum_of_ints, carry = self.add_ints_with_carry(
-                self.get_value_from_node(i),
-                self.get_value_from_node(j),
-                carry
-            )
+        while i or j or carry:
+            if not i and not j and carry:
+                current.next = ListNode(carry)
+                break
             
-            list_nodes.append(ListNode(sum_of_ints))
+            sum_of_ints = (i.val if i else 0) + (j.val if j else 0) + carry
+            carry = int(sum_of_ints / 10)
+            sum_of_ints %= 10
             
-            i = self.get_next_node(i)
-            j = self.get_next_node(j)
+            current.next = ListNode(sum_of_ints)
             
-        if carry > 0:
-            list_nodes.append(ListNode(counter))
+            current = current.next
+            i = i.next if i else None
+            j = j.next if j else None
         
-        for i in range(1, len(list_nodes)):
-            list_nodes[i - 1].next = list_nodes[i]
-        
-        return list_nodes[0]
+        return node_head.next

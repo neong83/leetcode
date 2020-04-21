@@ -7,23 +7,19 @@
 class Solution:    
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         node_head = ListNode(0)
-        i, j = l1, l2
         carry = 0
         current = node_head
         
-        while i or j or carry:
-            if not i and not j and carry:
-                current.next = ListNode(carry)
-                break
+        while l1 or l2 or carry:
+            sum_of_ints = l1.val + carry if l1 else carry
+            sum_of_ints += l2.val if l2 else 0
             
-            sum_of_ints = (i.val if i else 0) + (j.val if j else 0) + carry
-            carry = int(sum_of_ints / 10)
-            sum_of_ints %= 10
-            
+            #If x and y are integers, the return value from divmod() is same as (a // b, x % y)
+            carry, sum_of_ints = divmod(sum_of_ints, 10)
             current.next = ListNode(sum_of_ints)
             
             current = current.next
-            i = i.next if i else None
-            j = j.next if j else None
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
         
         return node_head.next
